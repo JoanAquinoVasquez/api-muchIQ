@@ -1,0 +1,21 @@
+const express = require('express');
+const router = express.Router();
+const placeController = require('../controllers/placeController');
+const { protect } = require('../middleware/authMiddleware');
+
+// Ruta para obtener todos los lugares (con filtros)
+// GET /api/places
+router.get('/', placeController.getPlaces);
+
+// GET /api/places/:id (Obtener detalles de UN lugar)
+router.get('/:id', placeController.getPlaceById);
+
+// Rutas Protegidas
+// Ruta para crear un nuevo lugar
+// POST /api/places
+router.post('/', protect, placeController.createPlace);
+
+// POST /api/places/:id/reviews (Crear reseña y ganar puntos)
+router.post('/:id/reviews', protect, placeController.createPlaceReview);
+
+module.exports = router;
