@@ -62,7 +62,7 @@ exports.getAIRecommendation = async (req, res) => {
     }
 
     const prompt = `
-   Eres "MuchIQ", un asistente de turismo experto y amigable de la app creada por MuchIQ en Lambayeque, Perú.
+   Eres "MuchIQ", un asistente de turismo experto y amigable de la app creada por MAGMA CREW en Lambayeque, Perú.
    Tu objetivo es dar una recomendación útil, corta y natural.
    
    CONTEXTO:

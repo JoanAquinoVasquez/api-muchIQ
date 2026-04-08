@@ -5,7 +5,7 @@ const Place = require('../models/Place'); // Para vincular lugares
 exports.createDish = async (req, res) => {
   try {
     const { name, description, imageUrl, tags, recommendedPlaces } = req.body;
-    
+    // (Opcional: verificar que los IDs de recommendedPlaces existan)
     const dish = new Dish({
       name,
       description,
@@ -37,7 +37,7 @@ exports.getDishes = async (req, res) => {
 exports.getDishById = async (req, res) => {
   try {
     const dish = await Dish.findById(req.params.id)
-                           .populate('recommendedPlaces', 'name address rating');
+      .populate('recommendedPlaces', 'name address rating category photos'); // populamos lo necesario para la tarjeta
 
     if (dish) {
       res.json(dish);
@@ -79,7 +79,7 @@ exports.createManyDishes = async (req, res) => {
     }
 
     const savedDishes = await Dish.insertMany(dishes);
-    
+
     res.status(201).json(savedDishes);
 
   } catch (error) {

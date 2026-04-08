@@ -90,6 +90,37 @@ exports.getPlaceById = async (req, res) => {
     }
 };
 
+// --- Controlador para EDITAR/ACTUALIZAR un lugar ---
+exports.updatePlace = async (req, res) => {
+    try {
+        const placeId = req.params.id;
+        const updateData = req.body;
+
+        // Validamos si nos envían longitud y latitud nuevas para rehacer el objeto GeoJSON
+        if (updateData.longitude && updateData.latitude) {
+            updateData.location = {
+                type: 'Point',
+                coordinates: [updateData.longitude, updateData.latitude]
+            };
+        }
+
+        const updatedPlace = await Place.findByIdAndUpdate(
+            placeId,
+            { $set: updateData },
+            { new: true, runValidators: true } // new: true devuelve el objeto ya actualizado
+        );
+
+        if (!updatedPlace) {
+            return res.status(404).json({ message: 'Lugar no encontrado para actualizar' });
+        }
+
+        res.status(200).json(updatedPlace);
+
+    } catch (error) {
+        console.error('Error al actualizar lugar:', error);
+        res.status(500).json({ message: 'Error en el servidor al actualizar el lugar' });
+    }
+};
 
 // --- Controlador para CREAR UNA RESEÑA (y ganar puntos) ---
 exports.createPlaceReview = async (req, res) => {
