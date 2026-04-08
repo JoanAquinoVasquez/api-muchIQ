@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { protect } = require('../middleware/authMiddleware'); // Importar el middleware
 const userController = require('../controllers/userController'); // Importamos el controlador
+const { protect } = require('../middleware/authMiddleware'); // Importar el middleware
 
 // Ruta para el registro
 // POST /api/users/register
@@ -11,10 +11,9 @@ router.post('/register', userController.registerUser);
 // POST /api/users/login
 router.post('/login', userController.loginUser);
 
-router.get('/profile', protect, userController.getProfile);
-
-module.exports = router;
-
-// (Aquí pondremos /login, /profile, etc. más adelante)
+// Rutas de perfil (Protegidas)
+router.route('/profile')
+    .get(protect, userController.getProfile) // Usando la función enriquecida original (getProfile en vez de getUserProfile)
+    .put(protect, userController.updateUserProfile);
 
 module.exports = router;

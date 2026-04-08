@@ -18,4 +18,7 @@ router.post('/', protect, placeController.createPlace);
 // POST /api/places/:id/reviews (Crear reseña y ganar puntos)
 router.post('/:id/reviews', protect, placeController.createPlaceReview);
 
+// PUT /api/places/:id (Actualizar datos de un lugar)
+router.put('/:id', protect, placeController.updatePlace);
+
 module.exports = router;
