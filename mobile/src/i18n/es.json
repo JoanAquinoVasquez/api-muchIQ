@@ -1,0 +1,87 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "close": "Cerrar"
+  },
+  "auth": {
+    "login": "Iniciar Sesión",
+    "register": "Registrarse",
+    "logout": "Cerrar Sesión",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "username": "Nombre de Usuario",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "noAccount": "¿No tienes cuenta?",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "createAccount": "Crear Cuenta",
+    "welcomeBack": "¡Bienvenido de vuelta!",
+    "joinUs": "Únete a la aventura",
+    "loginError": "Credenciales incorrectas",
+    "registerSuccess": "Cuenta creada exitosamente",
+    "isTourist": "¿Eres turista?",
+    "reasonForVisit": "¿Qué te trajo a Lambayeque?",
+    "selectTastes": "Selecciona tus intereses"
+  },
+  "feed": {
+    "title": "Descubre Lambayeque",
+    "popularPlaces": "Lugares Populares",
+    "popularDishes": "Platos Típicos",
+    "nearYou": "Cerca de ti",
+    "recommended": "Recomendado para ti",
+    "noResults": "No se encontraron resultados",
+    "loadMore": "Cargar más"
+  },
+  "places": {
+    "details": "Detalles del Lugar",
+    "reviews": "Reseñas",
+    "addReview": "Agregar Reseña",
+    "distance": "Distancia",
+    "openNow": "Abierto ahora",
+    "closed": "Cerrado",
+    "getDirections": "Cómo llegar"
+  },
+  "rewards": {
+    "title": "Recompensas",
+    "yourPoints": "Tus Puntos",
+    "redeem": "Canjear",
+    "redeemed": "Canjeado",
+    "notEnoughPoints": "Puntos insuficientes",
+    "redeemSuccess": "¡Recompensa canjeada!"
+  },
+  "profile": {
+    "title": "Mi Perfil",
+    "points": "Puntos",
+    "achievements": "Logros",
+    "visitedPlaces": "Lugares Visitados",
+    "settings": "Configuración",
+    "language": "Idioma",
+    "logout": "Cerrar Sesión"
+  },
+  "categories": {
+    "restaurant": "Restaurante",
+    "museum": "Museo",
+    "park": "Parque",
+    "historical": "Histórico",
+    "adventure": "Aventura",
+    "beach": "Playa",
+    "market": "Mercado"
+  },
+  "tastes": {
+    "history": "Historia",
+    "adventure": "Aventura",
+    "food": "Gastronomía",
+    "culture": "Cultura",
+    "nature": "Naturaleza",
+    "beach": "Playa",
+    "shopping": "Compras"
+  }
+}

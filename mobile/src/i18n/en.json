@@ -1,0 +1,87 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search",
+    "filter": "Filter",
+    "close": "Close"
+  },
+  "auth": {
+    "login": "Log In",
+    "register": "Sign Up",
+    "logout": "Log Out",
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "createAccount": "Create Account",
+    "welcomeBack": "Welcome back!",
+    "joinUs": "Join the adventure",
+    "loginError": "Invalid credentials",
+    "registerSuccess": "Account created successfully",
+    "isTourist": "Are you a tourist?",
+    "reasonForVisit": "What brought you to Lambayeque?",
+    "selectTastes": "Select your interests"
+  },
+  "feed": {
+    "title": "Discover Lambayeque",
+    "popularPlaces": "Popular Places",
+    "popularDishes": "Typical Dishes",
+    "nearYou": "Near you",
+    "recommended": "Recommended for you",
+    "noResults": "No results found",
+    "loadMore": "Load more"
+  },
+  "places": {
+    "details": "Place Details",
+    "reviews": "Reviews",
+    "addReview": "Add Review",
+    "distance": "Distance",
+    "openNow": "Open now",
+    "closed": "Closed",
+    "getDirections": "Get directions"
+  },
+  "rewards": {
+    "title": "Rewards",
+    "yourPoints": "Your Points",
+    "redeem": "Redeem",
+    "redeemed": "Redeemed",
+    "notEnoughPoints": "Not enough points",
+    "redeemSuccess": "Reward redeemed!"
+  },
+  "profile": {
+    "title": "My Profile",
+    "points": "Points",
+    "achievements": "Achievements",
+    "visitedPlaces": "Visited Places",
+    "settings": "Settings",
+    "language": "Language",
+    "logout": "Log Out"
+  },
+  "categories": {
+    "restaurant": "Restaurant",
+    "museum": "Museum",
+    "park": "Park",
+    "historical": "Historical",
+    "adventure": "Adventure",
+    "beach": "Beach",
+    "market": "Market"
+  },
+  "tastes": {
+    "history": "History",
+    "adventure": "Adventure",
+    "food": "Food",
+    "culture": "Culture",
+    "nature": "Nature",
+    "beach": "Beach",
+    "shopping": "Shopping"
+  }
+}
