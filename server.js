@@ -1,7 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const connectDB = require('./config/db'); // Importa la conexión a la DB
+const connectDB = require('./config/db');
 
 // Cargar variables de entorno
 dotenv.config();
@@ -12,24 +12,23 @@ connectDB();
 // Inicializar Express
 const app = express();
 
-// Middlewares (funciones que se ejecutan en cada petición)
-app.use(cors()); // Permite peticiones de otros dominios (tu app móvil)
-app.use(express.json()); // Permite a express entender JSON
+// Middlewares
+app.use(cors());
+app.use(express.json());
 
 // --- RUTAS ---
-// Ruta de prueba
 app.get('/', (req, res) => {
-  res.send('¡API de Hackaton lista!');
+  res.json({ message: '¡MuchIQ API está operativa! 🚀' });
 });
 
-const userRoutes = require('./routes/userRoutes'); // Importa las rutas de usuario
-app.use('/api/users', userRoutes); // Usa las rutas en /api/users
+const userRoutes = require('./routes/userRoutes');
+app.use('/api/users', userRoutes);
 
-const authRoutes = require('./routes/authRoutes'); // Importa las rutas de auth
-app.use('/api/auth', authRoutes); // Usa las rutas en /api/auth
+const authRoutes = require('./routes/authRoutes');
+app.use('/api/auth', authRoutes);
 
-const placeRoutes = require('./routes/placeRoutes'); // Importa las rutas de lugares
-app.use('/api/places', placeRoutes); // Usa las rutas en /api/places
+const placeRoutes = require('./routes/placeRoutes');
+app.use('/api/places', placeRoutes);
 
 const partnerRoutes = require('./routes/partnerRoutes');
 app.use('/api/partners', partnerRoutes);
@@ -45,6 +44,28 @@ app.use('/api/feed', feedRoutes);
 
 const aiRoutes = require('./routes/aiRoutes');
 app.use('/api/ai', aiRoutes);
+
+const waitlistRoutes = require('./routes/waitlistRoutes');
+app.use('/api/waitlist', waitlistRoutes);
+
+// --- MANEJO DE ERRORES (JSON Always) ---
+
+// 404 handler
+app.use((req, res) => {
+    res.status(404).json({ 
+        message: `La ruta ${req.originalUrl} no existe en este servidor.`,
+        error: "Not Found"
+    });
+});
+
+// Error global handler
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(err.status || 500).json({
+        message: err.message || 'Error interno del servidor',
+        error: process.env.NODE_ENV === 'development' ? err : {}
+    });
+});
 
 // --- Iniciar Servidor ---
 const PORT = process.env.PORT || 5000;
