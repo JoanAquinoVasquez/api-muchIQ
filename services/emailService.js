@@ -2,8 +2,6 @@ const nodemailer = require('nodemailer');
 
 const sendWaitlistConfirmation = async (email) => {
     try {
-        // Configuramos el transporte (Gmail)
-        // NOTA: EMAIL_PASS debe ser una "App Password" de Google si se usa Gmail con 2FA
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -12,40 +10,74 @@ const sendWaitlistConfirmation = async (email) => {
             }
         });
 
+        // URLs de recursos públicos
+        const logoUrl = 'https://raw.githubusercontent.com/JoanAquinoVasquez/MuchIQ/main/landing/src/assets/icono_muchiq_landing.png';
+        const mascotUrl = 'https://raw.githubusercontent.com/JoanAquinoVasquez/MuchIQ/main/landing/src/assets/saludo.gif';
+
         const mailOptions = {
-            from: `"MuchIQ" <${process.env.EMAIL_USER}>`,
+            from: `"MuchIQ Team" <${process.env.EMAIL_USER}>`,
             to: email,
-            subject: '¡Ya estás en la lista de espera de MuchIQ! 🚀',
+            subject: '¡Bienvenido a la expedición MuchIQ! 🚀🏛️',
             html: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <h1 style="color: #bc5e18; margin: 0;">MuchIQ</h1>
-                        <p style="color: #666; font-size: 16px;">Turismo Inteligente en el Norte</p>
-                    </div>
-                    
-                    <div style="background: linear-gradient(135deg, #bc5e18 0%, #00878e 100%); padding: 30px; border-radius: 8px; color: white; text-align: center; margin-bottom: 20px;">
-                        <h2 style="margin: 0; font-size: 24px;">¡Bienvenido a la expedición!</h2>
-                        <p style="font-size: 18px; margin-top: 10px;">Estamos muy emocionados de tenerte con nosotros.</p>
-                    </div>
-
-                    <div style="color: #333; line-height: 1.6;">
-                        <p>Hola,</p>
-                        <p>Gracias por registrarte en nuestra lista de espera. Te has convertido en uno de los primeros en asegurar su lugar para vivir la experiencia <strong>MuchIQ</strong>.</p>
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="utf-8">
+                    <style>
+                        .body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f9f9f9; padding: 40px 10px; }
+                        .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; shadow: 0 10px 30px rgba(0,0,0,0.05); }
+                        .header { padding: 40px; text-align: center; }
+                        .logo { width: 60px; height: auto; margin-bottom: 20px; }
+                        .hero { background: linear-gradient(135deg, #1A9B8E 0%, #D4AF37 100%); padding: 40px 20px; color: white; text-align: center; }
+                        .mascot { width: 180px; height: auto; margin-bottom: 20px; border-radius: 20px; }
+                        .content { padding: 40px; color: #333333; line-height: 1.6; }
+                        .footer { padding: 30px; text-align: center; font-size: 12px; color: #999999; background: #fdfdfd; }
+                        .button { display: inline-block; padding: 14px 30px; background-color: #1A9B8E; color: #ffffff !important; text-decoration: none; border-radius: 12px; font-weight: bold; margin-top: 20px; }
+                        .social-links { margin-top: 20px; }
+                        .social-icon { margin: 0 10px; text-decoration: none; color: #1A9B8E; font-weight: bold; }
+                    </style>
+                </head>
+                <body class="body">
+                    <div class="container">
+                        <div class="header">
+                            <img src="${logoUrl}" alt="MuchIQ Logo" class="logo">
+                            <h1 style="margin:0; font-size: 28px; letter-spacing: -1px; color: #1A9B8E;">MuchIQ</h1>
+                        </div>
                         
-                        <p><strong>¿Qué sigue ahora?</strong></p>
-                        <ul>
-                            <li>Te avisaremos antes que a nadie cuando la App esté lista para descargar.</li>
-                            <li>Tendrás acceso a beneficios exclusivos para los primeros usuarios (Puntos extra en nuestra plataforma).</li>
-                            <li>Serás parte de la comunidad que está transformando el turismo en Lambayeque.</li>
-                        </ul>
+                        <div class="hero">
+                            <img src="${mascotUrl}" alt="MuchIQ Mascot" class="mascot">
+                            <h2 style="margin:0; font-size: 24px;">¡Ya eres parte de la lista de espera exclusiva!</h2>
+                        </div>
 
-                        <p>Mientras tanto, prepárate para descubrir la esencia cultural del norte como nunca antes.</p>
-                    </div>
+                        <div class="content">
+                            <p>Hola,</p>
+                            <p>¡Es un placer saludarte! Te has unido oficialmente a la lista de espera de <strong>MuchIQ</strong>, la plataforma que está fusionando la inteligencia artificial con la milenaria cultura del norte peruano.</p>
+                            
+                            <p>Como miembro fundador de la lista de espera, tendrás beneficios únicos:</p>
+                            <ul style="padding-left: 20px;">
+                                <li>Acceso anticipado a la Beta Cerrada de la App.</li>
+                                <li>Insignia de "Explorador Fundador" dentro de la plataforma.</li>
+                                <li>Notificaciones exclusivas sobre lanzamientos en Lambayeque.</li>
+                            </ul>
 
-                    <div style="text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; font-size: 12px; color: #999;">
-                        <p>© 2026 MuchIQ - Proyecto de Hackathon Lambayeque</p>
+                            <p style="margin-top: 30px;">Estamos trabajando duro para que la experiencia sea mágica. ¡Muy pronto recibirás noticias nuestras!</p>
+                            
+                            <div style="text-align: center;">
+                                <a href="https://instagram.com/muchiq.pe" class="button">Ver avances en Instagram</a>
+                            </div>
+                        </div>
+
+                        <div class="footer">
+                            <div class="social-links">
+                                <a href="https://tiktok.com/@muchiq.pe" class="social-icon">TikTok</a> • 
+                                <a href="https://instagram.com/muchiq.pe" class="social-icon">Instagram</a> • 
+                                <a href="https://facebook.com/muchiq.pe" class="social-icon">Facebook</a>
+                            </div>
+                            <p style="margin-top: 20px;">© 2026 MuchIQ Team • Lambayeque, Perú<br>Reinventando el turismo cultural.</p>
+                        </div>
                     </div>
-                </div>
+                </body>
+                </html>
             `
         };
 
@@ -54,8 +86,6 @@ const sendWaitlistConfirmation = async (email) => {
         return true;
     } catch (error) {
         console.error('Error enviando email:', error);
-        // No lanzamos error para no detener el flujo del registro, 
-        // pero lo registramos.
         return false;
     }
 };
