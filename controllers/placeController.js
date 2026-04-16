@@ -49,23 +49,36 @@ exports.getPlaces = async (req, res) => {
         }
 
         // --- FILTRO GEOESPACIAL ---
-        if (lat && lng && radius) {
-            const radiusInMeters = parseFloat(radius) * 1000;
-            const longitude = parseFloat(lng);
+        if (lat && lng) {
             const latitude = parseFloat(lat);
+            const longitude = parseFloat(lng);
+            const maxDistance = radius ? parseFloat(radius) * 1000 : 10000; // 10km por defecto
 
-            filter.location = {
-                $near: {
-                    $geometry: {
-                        type: 'Point',
-                        coordinates: [longitude, latitude]
-                    },
-                    $maxDistance: radiusInMeters
+            const pipeline = [
+                {
+                    $geoNear: {
+                        near: { type: 'Point', coordinates: [longitude, latitude] },
+                        distanceField: 'distance',
+                        spherical: true,
+                        maxDistance: maxDistance,
+                        distanceMultiplier: 0.001 // Convertir metros a kilómetros
+                    }
                 }
-            };
-        }
-        const places = await Place.find(filter);
+            ];
 
+            // Aplicar otros filtros dentro de la agregación
+            if (category) {
+                pipeline.push({ $match: { category: category } });
+            }
+            if (tag) {
+                pipeline.push({ $match: { tags: { $in: [tag] } } });
+            }
+
+            const places = await Place.aggregate(pipeline);
+            return res.status(200).json(places);
+        }
+
+        const places = await Place.find(filter);
         res.status(200).json(places);
 
     } catch (error) {
