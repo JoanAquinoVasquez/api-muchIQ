@@ -10,6 +10,9 @@ router.get('/', placeController.getPlaces);
 // GET /api/places/:id (Obtener detalles de UN lugar)
 router.get('/:id', placeController.getPlaceById);
 
+// GET /api/places/:id/dishes (Obtener platos que ofrecen este lugar)
+router.get('/:id/dishes', placeController.getPlaceDishes);
+
 // Rutas Protegidas
 // Ruta para crear un nuevo lugar
 // POST /api/places

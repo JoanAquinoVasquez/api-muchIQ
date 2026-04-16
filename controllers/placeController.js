@@ -1,5 +1,6 @@
 const Place = require('../models/Place');
 const User = require('../models/User');
+const Dish = require('../models/Dish');
 
 // --- Controlador para CREAR un nuevo lugar (para pruebas/admin) ---
 exports.createPlace = async (req, res) => {
@@ -168,6 +169,18 @@ exports.createPlaceReview = async (req, res) => {
 
     } catch (error) {
         console.error(error);
+        res.status(500).json({ message: 'Error en el servidor' });
+    }
+};
+
+// --- Controlador para OBTENER LOS PLATOS DE UN LUGAR ---
+exports.getPlaceDishes = async (req, res) => {
+    try {
+        const placeId = req.params.id;
+        const dishes = await Dish.find({ recommendedPlaces: placeId });
+        res.status(200).json(dishes);
+    } catch (error) {
+        console.error('Error al obtener los platos del lugar:', error);
         res.status(500).json({ message: 'Error en el servidor' });
     }
 };
