@@ -9,6 +9,10 @@ exports.joinWaitlist = async (req, res) => {
             return res.status(400).json({ message: 'El correo electrónico es requerido' });
         }
 
+        if (!name) {
+            return res.status(400).json({ message: 'El nombre es obligatorio para unirse a la lista' });
+        }
+
         // Verificar si ya existe
         const existing = await Waitlist.findOne({ email });
         if (existing) {
@@ -22,8 +26,8 @@ exports.joinWaitlist = async (req, res) => {
 
         await newEntry.save();
 
-        // Enviar correo de confirmación (asíncrono, no bloqueamos la respuesta)
-        sendWaitlistConfirmation(email);
+        // Enviar correo de confirmación (asíncrono)
+        sendWaitlistConfirmation(email, name);
 
         res.status(201).json({
             message: '¡Genial! Te has unido con éxito a la lista de espera.',

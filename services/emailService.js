@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-const sendWaitlistConfirmation = async (email) => {
+const sendWaitlistConfirmation = async (email, name) => {
     try {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -13,11 +13,14 @@ const sendWaitlistConfirmation = async (email) => {
         // URLs de recursos públicos
         const logoUrl = 'https://raw.githubusercontent.com/JoanAquinoVasquez/MuchIQ/main/landing/src/assets/icono_muchiq_landing.png';
         const mascotUrl = 'https://raw.githubusercontent.com/JoanAquinoVasquez/MuchIQ/main/landing/src/assets/saludo.gif';
+        
+        // Personalizamos el saludo si el nombre existe
+        const greeting = name ? `¡Hola ${name}!` : '¡Hola!';
 
         const mailOptions = {
             from: `"MuchIQ Team" <${process.env.EMAIL_USER}>`,
             to: email,
-            subject: '¡Bienvenido a la expedición MuchIQ! 🚀🏛️',
+            subject: `¡Bienvenido a la expedición MuchIQ, ${name || 'Explorador'}! 🚀🏛️`,
             html: `
                 <!DOCTYPE html>
                 <html>
@@ -25,7 +28,7 @@ const sendWaitlistConfirmation = async (email) => {
                     <meta charset="utf-8">
                     <style>
                         .body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f9f9f9; padding: 40px 10px; }
-                        .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; shadow: 0 10px 30px rgba(0,0,0,0.05); }
+                        .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
                         .header { padding: 40px; text-align: center; }
                         .logo { width: 60px; height: auto; margin-bottom: 20px; }
                         .hero { background: linear-gradient(135deg, #1A9B8E 0%, #D4AF37 100%); padding: 40px 20px; color: white; text-align: center; }
@@ -46,18 +49,18 @@ const sendWaitlistConfirmation = async (email) => {
                         
                         <div class="hero">
                             <img src="${mascotUrl}" alt="MuchIQ Mascot" class="mascot">
-                            <h2 style="margin:0; font-size: 24px;">¡Ya eres parte de la lista de espera exclusiva!</h2>
+                            <h2 style="margin:0; font-size: 24px;">${greeting} Ya eres parte de la lista de espera exclusiva</h2>
                         </div>
 
                         <div class="content">
-                            <p>Hola,</p>
-                            <p>¡Es un placer saludarte! Te has unido oficialmente a la lista de espera de <strong>MuchIQ</strong>, la plataforma que está fusionando la inteligencia artificial con la milenaria cultura del norte peruano.</p>
+                            <p>¡Qué alegría tenerte con nosotros!</p>
+                            <p>Te has unido oficialmente a la lista de espera de <strong>MuchIQ</strong>. Estamos utilizando inteligencia artificial avanzada para llevar la milenaria cultura del norte peruano directo a tu smartphone.</p>
                             
-                            <p>Como miembro fundador de la lista de espera, tendrás beneficios únicos:</p>
+                            <p>Como miembro de la lista de espera, tu nombre ya está registrado para:</p>
                             <ul style="padding-left: 20px;">
-                                <li>Acceso anticipado a la Beta Cerrada de la App.</li>
-                                <li>Insignia de "Explorador Fundador" dentro de la plataforma.</li>
-                                <li>Notificaciones exclusivas sobre lanzamientos en Lambayeque.</li>
+                                <li>Acceso prioritario al lanzamiento de la Beta.</li>
+                                <li>Obtener tu insignia de "Ciudadano Mochica" digital.</li>
+                                <li>Recompensas exclusivas en nuestra red de aliados culturales.</li>
                             </ul>
 
                             <p style="margin-top: 30px;">Estamos trabajando duro para que la experiencia sea mágica. ¡Muy pronto recibirás noticias nuestras!</p>
@@ -93,3 +96,4 @@ const sendWaitlistConfirmation = async (email) => {
 module.exports = {
     sendWaitlistConfirmation
 };
+
