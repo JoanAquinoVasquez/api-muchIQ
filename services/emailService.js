@@ -12,7 +12,7 @@ const sendWaitlistConfirmation = async (email, name) => {
 
         // URLs de recursos públicos
         const logoUrl = 'https://raw.githubusercontent.com/JoanAquinoVasquez/MuchIQ/main/src/assets/icono_muchiq_landing.png';
-        const mascotUrl = 'https://raw.githubusercontent.com/JoanAquinoVasquez/MuchIQ/main/src/assets/saludo.gif';
+        const mascotUrl = 'https://raw.githubusercontent.com/JoanAquinoVasquez/MuchIQ/main/src/assets/MuchIQ_pet.png';
         
         // Personalizamos el saludo si el nombre existe
         const greeting = name ? `¡Hola ${name}!` : '¡Hola!';
