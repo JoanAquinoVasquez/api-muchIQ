@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const itineraryController = require("../controllers/itineraryController");
-const auth = require("../middleware/auth"); // Asumiendo que existe un middleware de auth
+const { protect } = require("../middleware/authMiddleware");
 
 // Todas las rutas de itinerarios requieren autenticación
-router.post("/", auth, itineraryController.saveItinerary);
-router.get("/", auth, itineraryController.getMyItineraries);
-router.delete("/:id", auth, itineraryController.deleteItinerary);
+router.post("/", protect, itineraryController.saveItinerary);
+router.get("/", protect, itineraryController.getMyItineraries);
+router.delete("/:id", protect, itineraryController.deleteItinerary);
 
 module.exports = router;
