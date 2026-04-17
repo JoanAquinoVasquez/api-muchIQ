@@ -82,6 +82,7 @@ exports.registerUser = async (req, res) => {
             _id: savedUser._id,
             username: savedUser.username,
             email: savedUser.email,
+            points: savedUser.points,
             token: generateToken(savedUser._id),
         });
     } catch (error) {
