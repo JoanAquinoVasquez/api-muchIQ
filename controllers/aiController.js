@@ -3,7 +3,6 @@ const Place = require("../models/Place");
 const Dish = require("../models/Dish"); 
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
 exports.getAIRecommendation = async (req, res) => {
   try {
@@ -21,7 +20,7 @@ exports.getAIRecommendation = async (req, res) => {
     let locationContextMessage = "Ubicación actual del usuario proporcionada.";
 
     if (lat && lng) {
-      const radiusInMeters = 15 * 1000; // Aumentado a 15km para mejor cobertura
+      const radiusInMeters = 15 * 1000; 
       nearbyPlaces = await Place.find({
         location: {
           $near: {
@@ -36,7 +35,6 @@ exports.getAIRecommendation = async (req, res) => {
         .select("name description category tags rating address")
         .limit(20);
     } else {
-      // Si no hay ubicación, buscamos los lugares mejor puntuados de la región
       locationContextMessage = "El usuario NO ha compartido su ubicación exacta. Recomienda los lugares más importantes o populares de Lambayeque en general.";
       nearbyPlaces = await Place.find({})
         .sort({ rating: -1 })
@@ -104,12 +102,47 @@ exports.getAIRecommendation = async (req, res) => {
     8. Si la consulta pide un itinerario: Organiza los días de forma estructurada destacando actividades imperdibles.
   `;
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const aiTextResponse = response.text();
+    // MECANISMO DE FALLBACK: Lista de modelos a intentar
+    const modelsToTry = [
+      "gemini-3.1-flash-lite-preview",
+      "gemini-2.5-flash"
+    ];
 
-    res.status(200).json({
-      aiResponse: aiTextResponse,
+    let aiTextResponse = null;
+    let lastError = null;
+
+    for (const modelName of modelsToTry) {
+      try {
+        console.log(`🤖 Intentando con el modelo: ${modelName}`);
+        const model = genAI.getGenerativeModel({ model: modelName });
+        
+        // Añadimos un timeout local para la llamada a la IA si es posible
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        aiTextResponse = response.text();
+
+        if (aiTextResponse) {
+          console.log(`✅ Éxito con el modelo: ${modelName}`);
+          break; // Salimos del bucle si tenemos una respuesta
+        }
+      } catch (error) {
+        console.warn(`⚠️ Fallo con el modelo ${modelName}:`, error.message);
+        lastError = error;
+        // El bucle continuará con el siguiente modelo
+      }
+    }
+
+    if (aiTextResponse) {
+      return res.status(200).json({
+        aiResponse: aiTextResponse,
+      });
+    }
+
+    // Si todos fallaron
+    console.error("❌ Todos los modelos de IA fallaron.");
+    res.status(500).json({ 
+      message: "Lo siento, el servicio de IA está experimentando alta demanda. Por favor, intenta de nuevo en unos segundos.",
+      error: lastError?.message 
     });
   } catch (error) {
     console.error("Error en el controlador de IA:", error);
