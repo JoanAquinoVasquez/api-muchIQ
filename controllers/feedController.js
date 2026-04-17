@@ -1,20 +1,43 @@
 const Place = require('../models/Place');
 const Dish = require('../models/Dish');
 
-// --- Controlador para OBTENER Lugares Populares ---
+// --- Controlador para OBTENER Lugares Populares o Cercanos ---
 exports.getPopularPlaces = async (req, res) => {
   try {
-    // --- ¡NUEVO! ---
-    const minReviews = 100; // Por ejemplo, debe tener más de 5 reseñas
+    const { lat, lng } = req.query;
 
-    const topPlaces = await Place.find({
-      numReviews: { $gt: minReviews } // <-- ¡FILTRO AÑADIDO!
-    })
-      .sort({ rating: -1, numReviews: -1 }) // Ordena por rating (desc) y luego por nro. de reseñas (desc)
-      .limit(10) // Trae solo los 10 primeros
-      .select('name category rating numReviews photos');
+    if (lat && lng) {
+      const latitude = parseFloat(lat);
+      const longitude = parseFloat(lng);
+      const maxDistance = 50000; // 50 km de rango máximo para descubrimiento
 
-    res.status(200).json(topPlaces);
+      const topPlaces = await Place.aggregate([
+        {
+          $geoNear: {
+            near: { type: 'Point', coordinates: [longitude, latitude] },
+            distanceField: 'distance',
+            spherical: true,
+            maxDistance: maxDistance,
+            distanceMultiplier: 0.001 // Se mostrará en kilómetros si distance >= 1 en el frontend
+          }
+        },
+        { $limit: 10 },
+        { $project: { name: 1, category: 1, rating: 1, numReviews: 1, photos: 1, distance: 1 } }
+      ]);
+
+      return res.status(200).json(topPlaces);
+    } else {
+      // Fallback si no hay ubicación: lugares de todo Lambayeque más puntuados
+      const minReviews = 100;
+      const topPlaces = await Place.find({
+        numReviews: { $gt: minReviews }
+      })
+        .sort({ rating: -1, numReviews: -1 })
+        .limit(10)
+        .select('name category rating numReviews photos');
+
+      return res.status(200).json(topPlaces);
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error en el servidor' });
