@@ -99,7 +99,28 @@ exports.getAIRecommendation = async (req, res) => {
     5. Utiliza el historial para mantener la continuidad (ej. si recomendaron comida, ahora sugiere una caminata para después).
     6. ¡MUY IMPORTANTE!: Responde de forma concisa pero con entusiasmo. Usa el mismo idioma que el usuario.
     7. No saludes en respuestas de seguimiento para mantener la fluidez del chat.
-    8. Si la consulta pide un itinerario: Organiza los días de forma estructurada destacando actividades imperdibles.
+    8. SI LA CONSULTA PIDE UN ITINERARIO O PLAN: 
+       - Primero responde amablemente en texto sobre el plan general.
+       - LUEGO, al final de tu respuesta, añade OBLIGATORIAMENTE un bloque JSON encerrado entre las etiquetas [ITINERARY_JSON] y [/ITINERARY_JSON].
+       - El JSON debe seguir este esquema:
+         {
+           "title": "Nombre creativo del plan",
+           "days": [
+             {
+               "dayNumber": 1,
+               "title": "Título del día",
+               "activities": [
+                 {
+                   "time": "HH:MM",
+                   "placeName": "Nombre exacto del lugar",
+                   "description": "Breve descripción de qué hacer",
+                   "address": "Dirección completa",
+                   "category": "Categoría (Museo, Restaurante, etc.)"
+                 }
+               ]
+             }
+           ]
+         }
   `;
 
     // MECANISMO DE FALLBACK: Lista de modelos a intentar

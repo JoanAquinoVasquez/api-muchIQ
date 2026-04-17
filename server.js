@@ -48,6 +48,9 @@ app.use('/api/ai', aiRoutes);
 const waitlistRoutes = require('./routes/waitlistRoutes');
 app.use('/api/waitlist', waitlistRoutes);
 
+const itineraryRoutes = require('./routes/itineraryRoutes');
+app.use('/api/itineraries', itineraryRoutes);
+
 // --- MANEJO DE ERRORES (JSON Always) ---
 
 // 404 handler
