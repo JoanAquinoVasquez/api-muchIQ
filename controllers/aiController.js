@@ -32,22 +32,36 @@ exports.getAIRecommendation = async (req, res) => {
           },
         },
       })
-        .select("name description category tags rating address")
-        .limit(20);
+        .select("name description category tags rating address photos location")
+        .limit(12);
     } else {
       locationContextMessage = "El usuario NO ha compartido su ubicación exacta. Recomienda los lugares más importantes o populares de Lambayeque en general.";
       nearbyPlaces = await Place.find({})
         .sort({ rating: -1 })
-        .select("name description category tags rating address")
-        .limit(20);
+        .select("name description category tags rating address photos location")
+        .limit(12);
     }
 
     const nearbyDishes = await Dish.find({})
       .sort({ likes: -1 })
-      .limit(10)
+      .limit(8)
       .select("name description tags");
 
-    const placesContext = JSON.stringify(nearbyPlaces);
+    // Enriquecer el contexto con la primera foto y coordenadas para la IA
+    const curatedPlaces = nearbyPlaces.map(p => ({
+      name: p.name,
+      description: p.description,
+      category: p.category,
+      address: p.address,
+      rating: p.rating,
+      imageUrl: p.photos && p.photos.length > 0 ? p.photos[0] : null,
+      coordinates: p.location && p.location.coordinates ? {
+        lng: p.location.coordinates[0],
+        lat: p.location.coordinates[1]
+      } : null
+    }));
+
+    const placesContext = JSON.stringify(curatedPlaces);
     const dishesContext = JSON.stringify(nearbyDishes); 
 
     let conversationContext = "";
@@ -102,6 +116,7 @@ exports.getAIRecommendation = async (req, res) => {
     8. SI LA CONSULTA PIDE UN ITINERARIO O PLAN: 
        - Primero responde amablemente en texto sobre el plan general.
        - LUEGO, al final de tu respuesta, añade OBLIGATORIAMENTE un bloque JSON encerrado entre las etiquetas [ITINERARY_JSON] y [/ITINERARY_JSON].
+       - IMPORTANTE: Debes copiar exactamente el campo "imageUrl" y el objeto "coordinates" de los lugares que elijas de la lista proporcionada.
        - El JSON debe seguir este esquema:
          {
            "title": "Nombre creativo del plan",
@@ -115,7 +130,9 @@ exports.getAIRecommendation = async (req, res) => {
                    "placeName": "Nombre exacto del lugar",
                    "description": "Breve descripción de qué hacer",
                    "address": "Dirección completa",
-                   "category": "Categoría (Museo, Restaurante, etc.)"
+                   "category": "Categoría (Museo, Restaurante, etc.)",
+                   "imageUrl": "URL de la imagen del lugar",
+                   "coordinates": { "lat": -6.7, "lng": -79.8 }
                  }
                ]
              }
