@@ -6,6 +6,11 @@ const ActivitySchema = new mongoose.Schema({
   description: String,
   address: String,
   category: String,
+  imageUrl: String,
+  coordinates: {
+    lat: Number,
+    lng: Number
+  }
 });
 
 const DaySchema = new mongoose.Schema({
