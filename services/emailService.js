@@ -12,7 +12,7 @@ const sendWaitlistConfirmation = async (email, name) => {
 
         // URLs de recursos públicos
         const logoUrl = 'https://raw.githubusercontent.com/JoanAquinoVasquez/MuchIQ/main/src/assets/icono_muchiq_landing.png';
-        const mascotUrl = 'https://raw.githubusercontent.com/JoanAquinoVasquez/MuchIQ/main/src/assets/MuchIQ_pet.png';
+        const mascotUrl = 'https://raw.githubusercontent.com/JoanAquinoVasquez/MuchIQ/main/src/assets/MuchIQ_mascota.png';
         
         // Personalizamos el saludo si el nombre existe
         const greeting = name ? `¡Hola ${name}!` : '¡Hola!';
@@ -59,7 +59,7 @@ const sendWaitlistConfirmation = async (email, name) => {
                             <p>Como miembro de la lista de espera, tu nombre ya está registrado para:</p>
                             <ul style="padding-left: 20px;">
                                 <li>Acceso prioritario al lanzamiento de la Beta.</li>
-                                <li>Obtener tu insignia de "Ciudadano Mochica" digital.</li>
+                                <li>Obtener 100 puntos de bienvenida.</li>
                                 <li>Recompensas exclusivas en nuestra red de aliados culturales.</li>
                             </ul>
 
