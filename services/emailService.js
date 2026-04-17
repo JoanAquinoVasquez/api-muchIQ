@@ -13,6 +13,7 @@ const sendWaitlistConfirmation = async (email, name) => {
         // URLs de recursos públicos
         const logoUrl = 'https://raw.githubusercontent.com/JoanAquinoVasquez/MuchIQ/main/src/assets/icono_muchiq_landing.png';
         const mascotUrl = 'https://raw.githubusercontent.com/JoanAquinoVasquez/MuchIQ/main/src/assets/MuchIQ_mascota.png';
+        const eesUrl = 'https://raw.githubusercontent.com/JoanAquinoVasquez/MuchIQ/main/src/assets/ees.png';
         
         // Personalizamos el saludo si el nombre existe
         const greeting = name ? `¡Hola ${name}!` : '¡Hola!';
@@ -77,6 +78,10 @@ const sendWaitlistConfirmation = async (email, name) => {
                                 <a href="https://facebook.com/muchiq.pe" class="social-icon">Facebook</a>
                             </div>
                             <p style="margin-top: 20px;">© 2026 MuchIQ Team • Lambayeque, Perú<br>Reinventando el turismo cultural.</p>
+                            <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid #eeeeee;">
+                                <p style="margin-bottom: 10px; font-weight: bold; font-size: 10px; color: #bbbbbb; text-transform: uppercase; tracking: 1px;">Impulsado por</p>
+                                <img src="${eesUrl}" alt="EES Logo" style="height: 30px; width: auto; opacity: 0.7;">
+                            </div>
                         </div>
                     </div>
                 </body>
