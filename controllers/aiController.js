@@ -42,6 +42,11 @@ exports.getAIRecommendation = async (req, res) => {
         .limit(12);
     }
 
+    // Shuffle para dar variedad a la IA y que no siempre recomiende lo mismo
+    nearbyPlaces = nearbyPlaces
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 12);
+
     const nearbyDishes = await Dish.find({})
       .sort({ likes: -1 })
       .limit(8)
