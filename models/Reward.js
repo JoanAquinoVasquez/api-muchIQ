@@ -22,6 +22,10 @@ const RewardSchema = new mongoose.Schema({
     type: Number,
     default: 999, // 999 para "ilimitado" por ahora
   },
+  discount: { // Porcentaje de descuento exacto o descripción de oferta
+    type: String,
+    required: false
+  }
 }, {
   timestamps: true
 });

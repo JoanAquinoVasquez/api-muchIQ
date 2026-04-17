@@ -3,14 +3,15 @@ const User = require('../models/User');
 
 exports.createReward = async (req, res) => {
   try {
-    const { name, description, pointsCost, partnerId, stock } = req.body;
+    const { name, description, pointsCost, partnerId, stock, discount } = req.body;
     
     const reward = new Reward({
       name,
       description,
       pointsCost,
       partner: partnerId,
-      stock
+      stock,
+      discount
     });
 
     const savedReward = await reward.save();
