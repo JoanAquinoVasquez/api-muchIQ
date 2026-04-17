@@ -7,6 +7,10 @@ const { protect } = require('../middleware/authMiddleware'); // Importar el midd
 // POST /api/users/register
 router.post('/register', userController.registerUser);
 
+// Ruta para verificar email
+// POST /api/users/check-email
+router.post('/check-email', userController.checkEmail);
+
 // Ruta para el login
 // POST /api/users/login
 router.post('/login', userController.loginUser);

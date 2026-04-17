@@ -9,6 +9,24 @@ const generateToken = (id) => {
     });
 };
 
+// --- Controlador para verificar correo ---
+exports.checkEmail = async (req, res) => {
+    try {
+        const { email } = req.body;
+        if (!email) {
+            return res.status(400).json({ message: "Se requiere un correo electrónico" });
+        }
+        const user = await User.findOne({ email });
+        if (user) {
+            return res.status(200).json({ exists: true, message: "El correo electrónico ya está registrado" });
+        }
+        return res.status(200).json({ exists: false, message: "Correo disponible" });
+    } catch (error) {
+        console.error('Error al verificar correo:', error);
+        res.status(500).json({ message: "Error en el servidor al verificar correo" });
+    }
+};
+
 // --- Controlador de Registro ---
 exports.registerUser = async (req, res) => {
     try {
