@@ -66,7 +66,7 @@ const sendWaitlistConfirmation = async (email, name) => {
                             <p style="margin-top: 30px;">Estamos trabajando duro para que la experiencia sea mágica. ¡Muy pronto recibirás noticias nuestras!</p>
                             
                             <div style="text-align: center;">
-                                <a href="https://instagram.com/muchiq.pe" class="button">Ver avances en Instagram</a>
+                                <a href="https://muchiq-mobile.vercel.app/" class="button">Probar Demo</a>
                             </div>
                         </div>
 
