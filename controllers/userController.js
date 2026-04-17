@@ -23,16 +23,28 @@ exports.registerUser = async (req, res) => {
             stayEndDate,
         } = req.body;
 
-        // 2. Verificar si el usuario (email) ya existe
-        const userExists = await User.findOne({ email });
+        // Validaciones básicas de presencia
+        if (!username || !email || !password) {
+            return res.status(400).json({ message: "Por favor, completa nombre, correo y contraseña" });
+        }
 
-        if (userExists) {
+        // 2. Verificar si el usuario (email) ya existe
+        const emailExists = await User.findOne({ email });
+        if (emailExists) {
             return res
                 .status(400)
                 .json({ message: "El correo electrónico ya está registrado" });
         }
 
-        // 3. Crear el nuevo usuario
+        // 3. Verificar si el nombre de usuario ya existe (IMPORTANTE: campo unique en el modelo)
+        const usernameExists = await User.findOne({ username });
+        if (usernameExists) {
+            return res
+                .status(400)
+                .json({ message: "El nombre de usuario ya está en uso" });
+        }
+
+        // 4. Crear el nuevo usuario
         const user = new User({
             username,
             email,
@@ -43,24 +55,29 @@ exports.registerUser = async (req, res) => {
             stayEndDate: isTourist && stayEndDate ? new Date(stayEndDate) : null,
         });
 
-        // 4. Guardar el usuario en la DB
+        // 5. Guardar el usuario en la DB
         const savedUser = await user.save();
 
-        // 5. Crear y devolver un token (para que inicie sesión automáticamente)
-        if (savedUser) {
-            res.status(201).json({
-                message: "Usuario registrado con éxito",
-                _id: savedUser._id,
-                username: savedUser.username,
-                email: savedUser.email,
-                token: generateToken(savedUser._id),
-            });
-        } else {
-            res.status(400).json({ message: "Datos de usuario inválidos" });
-        }
+        // 6. Crear y devolver un token (para que inicie sesión automáticamente)
+        res.status(201).json({
+            message: "Usuario registrado con éxito",
+            _id: savedUser._id,
+            username: savedUser.username,
+            email: savedUser.email,
+            token: generateToken(savedUser._id),
+        });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Error en el servidor" });
+        console.error('Error en registro:', error);
+        
+        // Manejar errores de duplicidad de MongoDB (11000)
+        if (error.code === 11000) {
+            const field = Object.keys(error.keyPattern)[0];
+            return res.status(400).json({ 
+                message: field === 'email' ? 'El correo ya existe' : 'El nombre de usuario ya existe' 
+            });
+        }
+
+        res.status(500).json({ message: "Error en el servidor al registrar usuario" });
     }
 };
 
@@ -71,6 +88,11 @@ exports.loginUser = async (req, res) => {
 
         const user = await User.findOne({ email });
 
+        // AÑADIDO: Verificar si el usuario existe antes de acceder a sus propiedades para evitar crash
+        if (!user) {
+            return res.status(401).json({ message: "Correo o contraseña inválidos" });
+        }
+
         let formattedStayEndDate = null;
 
         if (user.stayEndDate) {
@@ -79,7 +101,7 @@ exports.loginUser = async (req, res) => {
                 .split("T")[0];
         }
 
-        if (user && (await user.matchPassword(password))) {
+        if (await user.matchPassword(password)) {
 
             res.json({
                 _id: user._id,
@@ -94,8 +116,8 @@ exports.loginUser = async (req, res) => {
             res.status(401).json({ message: "Correo o contraseña inválidos" });
         }
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Error en el servidor" });
+        console.error('Error en login:', error);
+        res.status(500).json({ message: "Error en el servidor al iniciar sesión" });
     }
 };
 
